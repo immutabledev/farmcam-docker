@@ -5,22 +5,19 @@ var fs = require("fs"),
     readline = require('readline'),
     cam = require('node-dahua-api'),
     http = require('http'),
-    https = require('https'),
     WebSocket = require('ws'),
     express = require('express'),
     app = express(),
     cors = require('cors'),
     Forecast = require('forecast');
 
-var DEBUG = 0;
-
-var conf = JSON.parse(fs.readFileSync("config.json"));
+var DEBUG = process.env.DEBUG;
 
 // Setup URL for camera video stream
-var IP = conf.cam_ip;
-var PORT = conf.cam_port;
-var USER = conf.cam_user;
-var PASS = conf.cam_pass;
+var IP = process.env.CAM_IP;
+var PORT = process.env.CAM_PORT;
+var USER = process.env.CAM_USER;
+var PASS = process.env.CAM_PASS;
 var URL = 'rtsp://'+USER+':'+PASS+'@'+IP+':'+PORT;
 
 var FINGERPRINT = "";
@@ -58,25 +55,17 @@ camera.on('ptzStatus', function(status) {
   //console.log("[Camera] Status: "+cameraStatus.pan+","+cameraStatus.tilt); 
 });
 
-const key = fs.readFileSync('certs/privkey.pem');
-const cert = fs.readFileSync('certs/cert.pem');
-const ca = fs.readFileSync('certs/chain.pem');
-
 // SocketIO Server
-const httpsIO = require('https').createServer({
-        key: key,
-        cert: cert,
-        ca: ca
-    }, app);
-const io = require('socket.io').listen(httpsIO);
-httpsIO.listen(SOCKETIO_PORT, function() {
+const httpIO = require('http').createServer(app);
+const io = require('socket.io').listen(httpIO);
+httpIO.listen(SOCKETIO_PORT, function() {
   console.log('[SocketIO] Server Running on %s port', SOCKETIO_PORT);
 });
 
 // Configure weather
 var forecast = new Forecast({
   service: 'forecast.io',
-  key: conf.forecastio_key,
+  key: process.env.FORECASTIO_KEY,
   units: 'f', // Only the first letter is parsed 
   cache: true,      // Cache API requests? 
   ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
@@ -85,7 +74,7 @@ var forecast = new Forecast({
     }
 });
 
-var whitelist = ['http://'+conf.domain, 'http://www.'+conf.domain, 'https://'+conf.domain, 'https://www.'+conf.domain];
+var whitelist = ['http://'+process.env.DOMAIN, 'http://www.'+process.env.DOMAIN, 'https://'+process.env.DOMAIN, 'https://www.'+process.env.DOMAIN];
 var corsOptions = {
   origin: function(origin, callback){
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -95,20 +84,14 @@ var corsOptions = {
 
 // Make weather data available via GET
 app.get('/forecast', cors(corsOptions), function(req, res) {
-	forecast.get([conf.weather_lat,conf.weather_lon], function(err, weather) {
+	forecast.get([process.env.WEATHER_LAT,process.env.WEATHER_LON], function(err, weather) {
 		if(err) return res.send(err);
 		res.json(weather);
 	});
 });
 
 // Websocket Server
-const httpsServer = https.createServer({
-        key: key,
-        cert: cert,
-        ca: ca
-    }).listen(WEBSOCKET_PORT);
-
-var socketServer = new WebSocket.Server( {server: httpsServer} );
+var socketServer = new WebSocket.Server( {port: WEBSOCKET_PORT} );
 socketServer.connectionCount = 0;
 socketServer.on('connection', function(socket, upgradeReq) {
         socketServer.connectionCount++;
@@ -185,7 +168,7 @@ io.on('connection', function(socket){
      socket.disconnect(true);
   }
 
-  if (conf.lock_controls == "true") {
+  if (process.env.LOCK_CONTROLS == "true") {
     socket.disconnect(true);
   }
 
