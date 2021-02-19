@@ -1,0 +1,23 @@
+{
+  "name": "farmcam",
+  "version": "2.0.0",
+  "description": "Backend for an HTML5 RTSP camera relay and basic controls..",
+  "main": "farmcam.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "amcrest",
+    "html5",
+    "cam",
+    "camera"
+  ],
+  "author": "immutabledev",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "node-dahua-api": "^1.0.2",
+    "socket.io-client": "^2.1.1",
+    "ws": "^3.1.0"
+  }
+}
