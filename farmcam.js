@@ -20,8 +20,6 @@ var USER = process.env.CAM_USER;
 var PASS = process.env.CAM_PASS;
 var URL = 'rtsp://'+USER+':'+PASS+'@'+IP+':'+PORT;
 
-var FINGERPRINT = "";
-
 var STREAM_SECRET = "farmcam",
         STREAM_PORT = 8181,
         WEBSOCKET_PORT = 8182,

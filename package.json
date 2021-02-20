@@ -1,6 +1,6 @@
 {
   "name": "farmcam",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Backend for an HTML5 RTSP camera relay and basic controls..",
   "main": "farmcam.js",
   "scripts": {
