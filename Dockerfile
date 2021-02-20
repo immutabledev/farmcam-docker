@@ -1,4 +1,7 @@
-FROM keymetrics/pm2:latest-buster
+FROM node:current-buster-slim
+
+# Install pm2
+RUN npm install pm2 -g
 
 # Bundle APP files
 COPY farmcam.js .
