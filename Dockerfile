@@ -1,8 +1,5 @@
 FROM keymetrics/pm2:12-buster
 
-# Install pm2
-RUN npm install pm2 -g
-
 # Bundle APP files
 COPY farmcam.js .
 COPY package.json .
