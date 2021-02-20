@@ -1,17 +1,4 @@
-FROM nginx:stable
-
-ARG CERTBOT_EMAIL=info@domain.com
-
-ARG DOMAIN_LIST
-
-RUN  apt-get update \
-      && apt-get install -y cron certbot python-certbot-nginx bash wget ffmpeg \
-      && certbot certonly --standalone --agree-tos -m "${CERTBOT_EMAIL}" -n -d ${DOMAIN_LIST} \
-      && rm -rf /var/lib/apt/lists/* \
-      && echo "@monthly certbot renew --nginx >> /var/log/cron.log 2>&1" >/etc/cron.d/certbot-renew
-
-# Install pm2
-RUN npm install pm2 -g
+FROM keymetrics/pm2:latest-alpine
 
 # Bundle APP files
 COPY farmcam.js .
