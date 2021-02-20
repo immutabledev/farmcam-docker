@@ -1,4 +1,4 @@
-FROM node:current-buster-slim
+FROM keymetrics/pm2:12-buster
 
 # Install pm2
 RUN npm install pm2 -g
