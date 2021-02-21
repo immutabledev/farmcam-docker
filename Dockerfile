@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:12-buster
+FROM keymetrics/pm2:14-buster
 
 # Bundle APP files
 COPY farmcam.js .
