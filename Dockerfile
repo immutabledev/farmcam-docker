@@ -5,6 +5,7 @@ COPY farmcam.js .
 COPY package.json .
 COPY ecosystem.config.js .
 COPY ffmpeg-runner.sh .
+COPY local_modules local_modules/
 
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
