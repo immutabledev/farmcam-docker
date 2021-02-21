@@ -55,7 +55,7 @@ camera.on('ptzStatus', function(status) {
 
 // SocketIO Server
 const httpIO = require('http').createServer(app);
-const io = require('socket.io').listen(httpIO);
+const io = require('socket.io')(httpIO);
 httpIO.listen(SOCKETIO_PORT, function() {
   console.log('[SocketIO] Server Running on %s port', SOCKETIO_PORT);
 });
