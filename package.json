@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "*",
-    "node-dahua-api": "file:./local_modules",
+    "node-dahua-api": "file:local_modules/node-dahua-api",
     "socket.io-client": "^2.1.1",
     "ws": "^3.1.0"
   }
