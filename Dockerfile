@@ -11,7 +11,4 @@ COPY local_modules local_modules/
 ENV NPM_CONFIG_LOGLEVEL warn
 RUN npm install --production
 
-# Show current folder structure in logs
-RUN ls -al -R
-
 CMD [ "pm2-runtime", "start", "ecosystem.config.js" ]
