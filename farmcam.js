@@ -72,7 +72,7 @@ var forecast = new Forecast({
     }
 });
 
-var whitelist = ['http://'+process.env.DOMAIN, 'http://www.'+process.env.DOMAIN, 'https://'+process.env.DOMAIN, 'https://www.'+process.env.DOMAIN];
+var whitelist = ['http://'+process.env.VIRTUAL_HOST, 'http://www.'+process.env.VIRTUAL_HOST, 'https://'+process.env.VIRTUAL_HOST, 'https://www.'+process.env.VIRTUAL_HOST];
 var corsOptions = {
   origin: function(origin, callback){
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
